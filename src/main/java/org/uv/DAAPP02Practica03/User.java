@@ -4,13 +4,9 @@
  */
 package org.uv.DAAPP02Practica03;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.*;
+import javax.persistence.*;
 
 /**
  *
@@ -19,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "usuarios")
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "usuario_id_usuarios_seq")
@@ -32,8 +28,7 @@ public class User {
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "rol")
-    private String rol;
+
     @Column(name = "enabled")
     private boolean enabled;
 
@@ -61,14 +56,6 @@ public class User {
         this.password = password;
     }
 
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
     public boolean isEnabled() {
         return enabled;
     }
@@ -76,7 +63,4 @@ public class User {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-    
-    
-    
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,38 +23,70 @@ import org.springframework.web.bind.annotation.PutMapping;
  * @author Ville
  */
 @RestController
-@RequestMapping("/api/v2")
+@RequestMapping("/api/empleado")
 public class ControllerEmpleado {
+
     @Autowired
     private RepositoryEmpleado repositoryEmpleado;
-    
-    @GetMapping("/empleado")
+
+    @GetMapping()
     public List<Empleado> list() {
-        return repositoryEmpleado.findAll();
-    }
-    
-    @GetMapping("/empleado/{id}")
-    public Object get(@PathVariable Long id) {
-         Optional<Empleado> resEmpleado=repositoryEmpleado.findById(id);
-        if(resEmpleado.isPresent())
-            return resEmpleado.get();
-        else 
+        List<Empleado> lstEmpleado = repositoryEmpleado.findAll();
+        if (!lstEmpleado.isEmpty()) {
+            return lstEmpleado;
+        } else {
             return null;
+        }
     }
-    
+
+    @GetMapping("/{id}")
+    public Object get(@PathVariable Long id) {
+        Optional<Empleado> optEmpleado = repositoryEmpleado.findById(id);
+        if (optEmpleado.isPresent()) {
+            return ResponseEntity.ok().body(optEmpleado);
+        } else {
+            return null;
+        }
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
-        return null;
+    public ResponseEntity<Empleado> put(@PathVariable Long id, @RequestBody Empleado empleado) {
+        Optional<Empleado> dataEmpleado = repositoryEmpleado.findById(id);
+        if (dataEmpleado.isPresent()) {
+            Empleado emp = dataEmpleado.get();
+            emp.setNombre(empleado.getNombre());
+            emp.setDireccion(empleado.getDireccion());
+            emp.setTelefono(empleado.getTelefono());
+            repositoryEmpleado.save(emp);
+            return ResponseEntity.ok().body(emp);
+        } else {
+            return null;
+        }
     }
-    
+
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Object input) {
-        return null;
+    public ResponseEntity<Empleado> post(@RequestBody Empleado empleado) {
+        try {
+            Empleado savedEmpleado = repositoryEmpleado.save(empleado);
+            return ResponseEntity.ok().body(savedEmpleado);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
-    
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        return null;
+    public ResponseEntity<Empleado> delete(@PathVariable Long id) {
+        Optional<Empleado> optEmpleado = repositoryEmpleado.findById(id);
+        if (optEmpleado.isPresent()) {
+            try {
+                repositoryEmpleado.deleteById(id);
+                return ResponseEntity.ok().build();
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        } else {
+            return null;
+        }
     }
-    
+
 }

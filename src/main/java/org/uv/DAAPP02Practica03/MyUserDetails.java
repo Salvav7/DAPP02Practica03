@@ -16,9 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author Ville
  */
 public class MyUserDetails implements UserDetails{
- 
-    
-     private User user;
+ private User user;
 
     public MyUserDetails(User user) {
         this.user = user;
@@ -26,9 +24,9 @@ public class MyUserDetails implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRol()));
-        return authorities;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("USER"));
+    return authorities;
     }
 
     @Override
@@ -49,11 +47,13 @@ public class MyUserDetails implements UserDetails{
     @Override
     public boolean isAccountNonLocked() {
         return true;
+
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+
     }
 
     @Override

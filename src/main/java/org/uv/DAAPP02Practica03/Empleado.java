@@ -13,9 +13,9 @@ import javax.persistence.Table;
 public class Empleado {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "empleados_clave_seq")
-    @SequenceGenerator(name="empleados_clave_seq",
-            sequenceName = "empleados_clave_seq",
+            generator = "usuarios_id_usuarios_seq")
+    @SequenceGenerator(name="usuarios_id_usuarios_seq",
+            sequenceName = "usuarios_id_usuarios_seq",
             initialValue=1, allocationSize = 1 ) 
     @Column(name = "clave")
     private Long clave;

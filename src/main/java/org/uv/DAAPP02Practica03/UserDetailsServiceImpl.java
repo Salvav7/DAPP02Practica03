@@ -14,9 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  *
  * @author Ville
  */
-public class UserDetailsServiceImpl implements UserDetailsService{
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-   @Autowired
+    @Autowired
     private UserRepository userRepository;
 
     @Override
@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
             throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado");
+            throw new UsernameNotFoundException("No encontrado");
         }
 
         return new MyUserDetails(user);
